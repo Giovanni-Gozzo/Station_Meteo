@@ -29,8 +29,7 @@ if __name__ == "__main__":
 
     extractor = ParquetExtractor(dataset_id)
 
-    extractor.add_filter("heure_de_paris", ">", "2025-11-01")
-    extractor.add_filter("heure_de_paris", "<", "2025-11-03")
+    extractor.add_filter("heure_de_paris", ">", "2025-11-06T07:29:42")
     extractor.fetch()
     df = extractor.get_data()
 

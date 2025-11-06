@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sélection de la Station Météo</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f4f4; }
+        .selection-box { padding: 40px; border: 1px solid #ccc; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #333; margin-bottom: 30px; }
+        select, button { padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ddd; font-size: 16px; width: 100%; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; cursor: pointer; border: none; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="selection-box">
+        <h1>🔍 Veuillez choisir une Station Météo</h1>
+
+        <form method="GET" action="/data">
+            <label for="station_id">Station ID :</label>
+            <select name="station_id" id="station_id" required>
+                <option value="" disabled selected>-- Sélectionnez une station --</option>
+                {% for id in unique_station_ids %}
+                    <option value="{{ id }}">{{ id }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Afficher les données</button>
+        </form>
+    </div>
+</body>
+</html>

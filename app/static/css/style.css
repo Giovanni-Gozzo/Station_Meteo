@@ -1,0 +1,123 @@
+/* Fichier: static/css/style.css */
+
+/* --- Généralités et Typographie --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #eef1f5; /* Fond léger */
+    color: #333;
+}
+
+h1 {
+    color: #1a4d8c; /* Bleu profond */
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+/* --- Formulaire de Filtre (Menu Déroulant) --- */
+.filter-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 15px 25px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    gap: 15px;
+}
+
+.filter-form label {
+    font-weight: 500;
+    color: #444;
+}
+
+.filter-form select {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    min-width: 200px;
+    transition: border-color 0.3s;
+}
+
+.filter-form select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* --- Tableau Météo --- */
+#meteo-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden; /* Important pour les bords arrondis */
+}
+
+/* En-têtes de Colonne */
+#meteo-table thead th {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 600;
+    position: sticky;
+    top: 0; /* Pour garder l'en-tête visible si le tableau est long */
+}
+
+/* Liens de Tri */
+#meteo-table thead th a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 0;
+    margin: 0;
+    transition: color 0.2s;
+}
+
+#meteo-table thead th a:hover {
+    color: #cce0ff;
+}
+
+.sort-indicator {
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
+/* Corps du Tableau (Lignes) */
+#meteo-table tbody td {
+    padding: 12px 10px;
+    border: 1px solid #eee;
+    text-align: center;
+}
+
+#meteo-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Bandes alternées pour la lisibilité */
+}
+
+#meteo-table tbody tr:hover {
+    background-color: #e6f7ff; /* Survol des lignes */
+    transition: background-color 0.2s;
+}
+
+/* Style spécifique pour les données (chiffres) */
+#meteo-table tbody td:nth-child(4), /* Température */
+#meteo-table tbody td:nth-child(5), /* Humidité */
+#meteo-table tbody td:nth-child(6)  /* Pression */
+{
+    font-weight: bold;
+}
+
+/* Message Aucune Donnée */
+p {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.2em;
+    color: #888;
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Stations Météo - Derniers relevés</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>🌤️ Derniers relevés météo Détaillés</h1>
+
+    <form method="GET" action="{{ url_for('show_meteo_data') }}" class="filter-form">
+        <label for="station_filter">Filtrer par Station ID :</label>
+        <select name="station_id" id="station_filter" onchange="this.form.submit()">
+            <option value="" disabled>-- Changer de station --</option>
+            {% for id in unique_station_ids %}
+                <option value="{{ id }}" {% if id == selected_station_id %}selected{% endif %}>
+                    {{ id }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="sort" value="{{ sort_by }}">
+        <input type="hidden" name="order" value="{{ order }}">
+    </form>
+
+    {% if meteo_data %}
+        <table id="meteo-table">
+            <thead>
+                <tr>
+                    <th>
+                        <a href="{{ url_for('show_meteo_data', sort='date', order='asc' if sort_by == 'date' and order == 'desc' else 'desc', station_id=selected_station_id) }}">
+                            Date
+                            {% if sort_by == 'date' %}<span class="sort-indicator">{% if order == 'desc' %} ↓ {% else %} ↑ {% endif %}</span>{% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="{{ url_for('show_meteo_data', sort='station_id', order='desc' if sort_by == 'station_id' and order == 'asc' else 'asc', station_id=selected_station_id) }}">
+                            ID Station
+                            {% if sort_by == 'station_id' %}<span class="sort-indicator">{% if order == 'asc' %} ↑ {% else %} ↓ {% endif %}</span>{% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="{{ url_for('show_meteo_data', sort='ville', order='desc' if sort_by == 'ville' and order == 'asc' else 'asc', station_id=selected_station_id) }}">
+                            Ville
+                            {% if sort_by == 'ville' %}<span class="sort-indicator">{% if order == 'asc' %} ↑ {% else %} ↓ {% endif %}</span>{% endif %}
+                        </a>
+                    </th>
+
+                    <th class="data-header">Temp. (°C)</th>
+                    <th class="data-header">Hum. (%)</th>
+                    <th class="data-header">Press. (hPa)</th>
+
+                    <th class="data-header">Pluie Max (mm/h)</th>
+                    <th class="data-header">Pluie Cumul (mm)</th>
+
+                    <th class="data-header">Force Vent Moy (km/h)</th>
+                    <th class="data-header">Force Rafale Max (km/h)</th>
+                    <th class="data-header">Dir. Vent Moy (°)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in meteo_data %}
+                <tr>
+                    <td>{{ m.get_date().strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ m.get_station().get_station_id() }}</td>
+                    <td>{{ m.get_station().get_ville() }}</td>
+
+                    <td>{{ m.get_atmosphere().get_temperature() }}</td>
+                    <td>{{ m.get_atmosphere().get_humidite() }}</td>
+                    <td>{{ m.get_atmosphere().get_pression() }}</td>
+
+                    <td>{{ m.get_pluie().get_pluie_intensite_max() }}</td>
+                    <td>{{ m.get_pluie().get_pluie() }}</td>
+
+                    <td>{{ m.get_vent().get_force_moyenne_du_vecteur_vent() }}</td>
+                    <td>{{ m.get_vent().get_force_rafale_max() }}</td>
+                    <td>{{ m.get_vent().get_direction_du_vecteur_vent_moyen() }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune donnée disponible pour la station sélectionnée ou aucune donnée météo n'a été trouvée.</p>
+    {% endif %}
+
+</body>
+</html>

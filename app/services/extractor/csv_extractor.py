@@ -11,4 +11,4 @@ class CSVExtractor(APIExtractor):
     def get_data(self) -> pd.DataFrame:
         if self.raw_data is None:
             raise ValueError("Aucune donnée brute. Appelez fetch() d'abord.")
-        return pd.read_csv(StringIO(self.raw_data))
+        return pd.read_csv(StringIO(self.raw_data),delimiter=";")
