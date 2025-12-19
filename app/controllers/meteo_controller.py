@@ -1,11 +1,14 @@
+"""
+Contrôleur pour la gestion des données météo.
+Orchestre la récupération depuis le pipeline et la transformation en objets modèles.
+"""
 from datetime import datetime
-from app.services.pipeline import MeteoPipeline
-from app.models.meteo import Meteo
-from app.models.station import Station
-from app.models.vent import Vent
-from app.models.pluie import Pluie
-from app.models.atmosphere import Atmosphere
 import pandas as pd
+
+from app.services.pipeline import MeteoPipeline
+from app.models.meteo_builder import MeteoBuilder
+from app.models.station_display import StationDisplay
+from app.structures.linked_list import LinkedList
 
 class MeteoController:
     """Orchestre la récupération et la transformation des données météo."""
@@ -13,16 +16,8 @@ class MeteoController:
     def __init__(self):
         self.pipeline = MeteoPipeline()
 
-    def get_value(row, key, default):
-        value = row.get(key, default)
-        if value is None or value=='': 
-            return default
-        return value
-
     def get_latest_meteo_data(self, dataset_ids: list[str]):
         """Exécute la pipeline et convertit le résultat en objets Meteo."""
-        from app.structures.linked_list import LinkedList
-        
         df = self.pipeline.run(dataset_ids)
         if df.empty:
             return LinkedList()
@@ -31,12 +26,12 @@ class MeteoController:
         print(df.columns)
         for _, row in df.iterrows():
             try:
-                def safe_get(row, key, default):
-                    value = row.get(key, default)
+                # Fonction locale pour sécuriser l'accès aux données
+                def safe_get(row_data, key, default):
+                    value = row_data.get(key, default)
                     if pd.isna(value):
                         return default
                     return value
-
 
                 date_val = safe_get(row, "heure_de_paris", None)
 
@@ -44,9 +39,6 @@ class MeteoController:
                     date_val = datetime.fromisoformat(date_val)
 
                 # Utilisation du Builder
-                from app.models.meteo_builder import MeteoBuilder
-                from app.models.station_display import StationDisplay
-
                 builder = MeteoBuilder()
                 meteo = (builder
                     .with_date(date_val)
@@ -77,7 +69,7 @@ class MeteoController:
                 decorated_meteo = StationDisplay(meteo)
                 meteo_objects.add(decorated_meteo)
 
-            except Exception as e:
+            except Exception as e: # pylint: disable=broad-exception-caught
                 print(f"[⚠️] Erreur lors de la création de l’objet Meteo : {e}")
                 continue
 
