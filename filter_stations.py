@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from app.services.extractor.csv_extractor import CSVExtractor
 from app.config import CONFIG
 
-# Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
 
 def filter_stations():
@@ -34,11 +33,8 @@ def filter_stations():
             extractor.add_filter("heure_de_paris", ">", one_hour_ago_iso)
             extractor.add_filter("heure_de_paris", "<", now_iso)
             
-            # We just need to fetch and see if we get data
-            # fetch() might raise an error if 404 or return empty
             try:
                 data = extractor.fetch()
-                # get_data returns a dataframe
                 df_station = extractor.get_data()
                 
                 if df_station is not None and not df_station.empty:
@@ -54,11 +50,9 @@ def filter_stations():
 
     print(f"\nFound {len(active_ids)} active stations out of {len(all_ids)}.")
     
-    # Save to new file first
     new_df = pd.DataFrame({"dataset_id": active_ids})
     new_file = ids_file # Overwrite directly as requested
     
-    # Backup original
     backup_file = ids_file + ".bak"
     df.to_csv(backup_file, index=False)
     print(f"Original list backed up to {backup_file}")
