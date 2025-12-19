@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from app.controllers.meteo_controller import MeteoController
 import pandas as pd
 from datetime import datetime
-import os  # Pour gérer les chemins de fichiers
+import os
+from app.config import CONFIG
 
 app = Flask(__name__)
 controller = MeteoController()
@@ -23,10 +24,8 @@ def get_sort_key(meteo_obj, sort_by):
 # --- Nouvelle Route d'Accueil : Afficher la sélection de station ---
 @app.route("/")
 def select_station():
-    # 1. Charger la liste des IDs (nécessite uniquement cette étape au démarrage)
     try:
-        # Assurez-vous que le chemin est correct pour votre environnement Flask
-        file_path = os.path.join(os.path.dirname(__file__), "..", "Data", "meteo_ids.csv")
+        file_path = os.path.join(CONFIG["DATA_DIR"], CONFIG["METEO_IDS_FILE"])
         df = pd.read_csv(file_path)
         all_ids = df["dataset_id"].tolist()
         unique_station_ids = sorted(list(set(all_ids)))
@@ -41,38 +40,25 @@ def select_station():
 # --- Nouvelle Route pour Afficher les Données Filtrées ---
 @app.route("/data")
 def show_meteo_data():
-    # 1. Récupérer le paramètre de filtre OBLIGATOIRE de l'URL
-    selected_station_id = request.args.get('station_id')
+    selected_station_ids = request.args.getlist('station_id')
 
-    if not selected_station_id:
-        # Si aucun ID n'est fourni (l'utilisateur a accédé directement à /data), on redirige
+    if not selected_station_ids:
         return redirect(url_for('select_station'))
 
-    # 2. Charger UNIQUEMENT les données de la station sélectionnée
-    # J'ajoute une nouvelle méthode hypothétique pour un chargement ciblé.
-    # Votre contrôleur doit être capable de ne charger que les données pour cet ID.
     try:
-        # Exemple de simulation: si votre contrôleur charge tout, filtrez ici.
-        # Sinon, modifiez votre contrôleur pour charger uniquement selected_station_id
-        all_meteo_data = controller.get_latest_meteo_data([selected_station_id])
-        filtered_data = all_meteo_data  # Si le contrôleur a déjà filtré/chargé
+        all_meteo_data = controller.get_latest_meteo_data(selected_station_ids)
+        filtered_data = all_meteo_data
 
-        # Charger tous les IDs uniques à nouveau pour le menu déroulant de la page de données
-        file_path = os.path.join(os.path.dirname(__file__), "..", "Data", "meteo_ids.csv")
-        df = pd.read_csv(file_path)
-        all_ids = df["dataset_id"].tolist()
-        unique_station_ids = sorted(list(set(all_ids)))
+        unique_station_ids = sorted(list(set(selected_station_ids)))
 
     except Exception as e:
-        print(f"Erreur lors du chargement des données pour {selected_station_id}: {e}")
+        print(f"Erreur lors du chargement des données pour {selected_station_ids}: {e}")
         filtered_data = []
-        unique_station_ids = []  # Ou gérer les erreurs
+        unique_station_ids = []
 
-    # 3. Récupérer les paramètres de tri de l'URL
-    sort_by = request.args.get('sort', 'date')
-    order = request.args.get('order', 'desc')
+    sort_by = request.args.get('sort', CONFIG["DEFAULT_SORT"])
+    order = request.args.get('order', CONFIG["DEFAULT_ORDER"])
 
-    # 4. Tri des données filtrées
     reverse_order = (order == 'desc')
 
     sorted_data = sorted(
@@ -81,12 +67,11 @@ def show_meteo_data():
         reverse=reverse_order
     )
 
-    # 5. Rendu du template 'meteo.html'
     return render_template(
         "meteo.html",
         meteo_data=sorted_data,
         unique_station_ids=unique_station_ids,
-        selected_station_id=selected_station_id,
+        selected_station_ids=selected_station_ids,
         sort_by=sort_by,
         order=order
     )

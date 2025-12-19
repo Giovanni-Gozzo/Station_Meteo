@@ -24,8 +24,8 @@ class OutlierCleaner(DataCleaner):
             "force_rafale_max": (0, 400),                            # km/h
 
             # --- Pluie ---
-            "pluie_intensite_max": (0, 300),  # mm/h (300 = pluie extrême, limite physique)
-            "pluie": (0, 500)                 # mm cumul (journée très humide)
+            "pluie_intensite_max": (0, 300),  # mm/h
+            "pluie": (0, 500)                 # mm cumul
         }
 
     def clean(self, df: pd.DataFrame) -> pd.DataFrame:

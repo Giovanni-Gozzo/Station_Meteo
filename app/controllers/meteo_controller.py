@@ -15,17 +15,19 @@ class MeteoController:
 
     def get_value(row, key, default):
         value = row.get(key, default)
-        if value is None or value=='':  # ou pd.isna(value) si c’est un DataFrame pandas
+        if value is None or value=='': 
             return default
         return value
 
     def get_latest_meteo_data(self, dataset_ids: list[str]):
         """Exécute la pipeline et convertit le résultat en objets Meteo."""
+        from app.structures.linked_list import LinkedList
+        
         df = self.pipeline.run(dataset_ids)
         if df.empty:
-            return []
+            return LinkedList()
 
-        meteo_objects = []
+        meteo_objects = LinkedList()
         print(df.columns)
         for _, row in df.iterrows():
             try:
@@ -36,46 +38,44 @@ class MeteoController:
                     return value
 
 
-                station = Station(
-                    nom=safe_get(row, "nom_station", "Inconnue"),
-                    ville=safe_get(row, "ville", "Toulouse"),
-                    station_id=safe_get(row, "station_id", "")
-                )
-
-                vent = Vent(
-                    direction_du_vecteur_de_vent_max=safe_get(row, "direction_du_vecteur_de_vent_max_en_degres", 0.0),
-                    direction_du_vecteur_vent_moyen=safe_get(row, "direction_du_vecteur_vent_moyen", 0.0),
-                    direction_du_vecteur_de_rafale_de_vent_max=safe_get(row,
-                                                                        "direction_du_vecteur_de_rafale_de_vent_max",
-                                                                        0.0),
-                    force_moyenne_du_vecteur_vent=safe_get(row, "force_moyenne_du_vecteur_vent", 0),
-                    force_rafale_max=safe_get(row, "force_rafale_max", 0)
-                )
-
-                pluie = Pluie(
-                    pluie_intensite_max=safe_get(row, "pluie_intensite_max", 0),
-                    pluie=safe_get(row, "pluie", 0)
-                )
-
-                atmosphere = Atmosphere(
-                    temperature=safe_get(row, "temperature_en_degre_c", 0.0),
-                    humidite=safe_get(row, "humidite", 0.0),
-                    pression=safe_get(row, "pression", 0.0)
-                )
-
                 date_val = safe_get(row, "heure_de_paris", None)
 
                 if isinstance(date_val, str):
                     date_val = datetime.fromisoformat(date_val)
 
-                meteo = Meteo(
-                    date=date_val,
-                    station=station,
-                    vent=vent,
-                    pluie=pluie,
-                    atmosphere=atmosphere
-                )
-                meteo_objects.append(meteo)
+                # Utilisation du Builder
+                from app.models.meteo_builder import MeteoBuilder
+                from app.models.station_display import StationDisplay
+
+                builder = MeteoBuilder()
+                meteo = (builder
+                    .with_date(date_val)
+                    .with_station(
+                        safe_get(row, "nom_station", "Inconnue"),
+                        safe_get(row, "ville", "Toulouse"),
+                        safe_get(row, "station_id", "")
+                    )
+                    .with_vent(
+                        safe_get(row, "direction_du_vecteur_de_vent_max_en_degres", 0.0),
+                        safe_get(row, "direction_du_vecteur_vent_moyen", 0.0),
+                        safe_get(row, "direction_du_vecteur_de_rafale_de_vent_max", 0.0),
+                        safe_get(row, "force_moyenne_du_vecteur_vent", 0),
+                        safe_get(row, "force_rafale_max", 0)
+                    )
+                    .with_pluie(
+                        safe_get(row, "pluie_intensite_max", 0),
+                        safe_get(row, "pluie", 0)
+                    )
+                    .with_atmosphere(
+                        safe_get(row, "temperature_en_degre_c", 0.0),
+                        safe_get(row, "humidite", 0.0),
+                        safe_get(row, "pression", 0.0)
+                    )
+                    .build())
+
+                # Utilisation du Decorator
+                decorated_meteo = StationDisplay(meteo)
+                meteo_objects.add(decorated_meteo)
 
             except Exception as e:
                 print(f"[⚠️] Erreur lors de la création de l’objet Meteo : {e}")

@@ -17,7 +17,14 @@ class MeteoPipeline:
         os.makedirs(self.output_dir, exist_ok=True)
 
     def run(self, dataset_ids: list[str]) -> pd.DataFrame:
-        """Exécute la pipeline pour plusieurs stations."""
+        """Exécute la pipeline pour plusieurs stations en utilisant une structure de données abstraite."""
+        from app.structures.queue import Queue
+        
+        stations_structure = Queue()
+        
+        for station_id in dataset_ids:
+            stations_structure.add(station_id)
+
         all_dataframes = []
 
         now = datetime.now()
@@ -26,21 +33,20 @@ class MeteoPipeline:
 
         print(f"[INFO] Extraction des relevés depuis : {one_hour_ago_iso}")
 
-        for dataset_id in dataset_ids:
+        # Itération sur la structure via son itérateur
+        for dataset_id in stations_structure:
             print(f"\n[INFO] 📡 Station : {dataset_id}")
 
-            extractor = CSVExtractor(dataset_id)
-            extractor.add_filter("heure_de_paris", ">", one_hour_ago_iso)
-            extractor.add_filter("heure_de_paris", "<", now_iso)
-
-            df = extractor.fetch()
-            df = extractor.get_data()
+            from app.services.extractor.csv_extraction_command import CSVExtractionCommand
+            
+            command = CSVExtractionCommand(dataset_id)
+            df = command.execute()
 
             if df is None or df.empty:
                 print(f"[⚠️] Aucune donnée pour {dataset_id}")
                 continue
 
-            # --- Nettoyage ---
+            #Nettoyage
             cleaning_pipeline = CleaningPipeline()
             cleaning_pipeline.add(CleaningNulls(columns=["temperature_en_degre_c", "humidite", "pression"]))
             cleaning_pipeline.add(TypeCleaner())
@@ -54,7 +60,6 @@ class MeteoPipeline:
             df['station_id'] = dataset_id
             all_dataframes.append(df)
 
-        # Combine toutes les données en un seul DataFrame global
         if all_dataframes:
             combined_df = pd.concat(all_dataframes, ignore_index=True)
             return combined_df

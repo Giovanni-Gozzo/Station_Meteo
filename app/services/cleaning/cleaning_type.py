@@ -7,7 +7,6 @@ class TypeCleaner(DataCleaner):
     Les lignes qui ne peuvent pas être converties sont supprimées.
     """
 
-    # Colonnes types par défaut pour ton dataset météo
     DEFAULT_COLUMNS_TYPES = {
         "direction_du_vecteur_vent_moyen":float,
         "direction_du_vecteur_de_vent_max_en_degres":float,
@@ -28,7 +27,7 @@ class TypeCleaner(DataCleaner):
 
         for col, target_type in self.columns_types.items():
             if col not in cleaned_df.columns:
-                continue  # ignore si la colonne n'existe pas
+                continue
 
             before_len = len(cleaned_df)
 
@@ -39,7 +38,6 @@ class TypeCleaner(DataCleaner):
             else:
                 cleaned_df[col] = cleaned_df[col].astype(str)
 
-            # Supprimer les lignes qui n'ont pas pu être converties
             cleaned_df = cleaned_df.dropna(subset=[col])
             removed = before_len - len(cleaned_df)
             if removed > 0:

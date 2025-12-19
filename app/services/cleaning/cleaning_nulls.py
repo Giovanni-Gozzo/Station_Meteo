@@ -32,7 +32,6 @@ class CleaningNulls:
         if missing_cols:
             raise KeyError(f"Les colonnes suivantes sont absentes du DataFrame : {missing_cols}")
 
-        # 🔹 Suppression des lignes contenant des NaN dans les colonnes cibles
         cleaned_df = df.dropna(subset=self.columns)
 
         print(f"[CLEANING] {len(df) - len(cleaned_df)} ligne(s) supprimée(s) à cause de valeurs nulles "

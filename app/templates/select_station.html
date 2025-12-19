@@ -16,16 +16,15 @@
     <div class="selection-box">
         <h1>🔍 Veuillez choisir une Station Météo</h1>
 
-        <form method="GET" action="/data">
-            <label for="station_id">Station ID :</label>
-            <select name="station_id" id="station_id" required>
-                <option value="" disabled selected>-- Sélectionnez une station --</option>
-                {% for id in unique_station_ids %}
-                    <option value="{{ id }}">{{ id }}</option>
+        <form method="GET" action="/data" class="station-form">
+            <label for="station-select">Choisissez une ou plusieurs stations :</label>
+            <select name="station_id" id="station-select" multiple size="10">
+                {% for station_id in unique_station_ids %}
+                    <option value="{{ station_id }}">{{ station_id }}</option>
                 {% endfor %}
             </select>
-
-            <button type="submit">Afficher les données</button>
+            <p class="help-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs stations.</p>
+            <button type="submit" class="submit-btn">Valider la sélection</button>
         </form>
     </div>
 </body>
