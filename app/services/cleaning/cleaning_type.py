@@ -52,5 +52,8 @@ class TypeCleaner(DataCleaner):
                 )
 
         total_removed = initial_len - len(cleaned_df)
-        print(f"[CLEANING] ✅ Total : {total_removed} ligne(s) supprimée(s) pour conversions de type")
+        print(
+            f"[CLEANING] ✅ Total : {total_removed} ligne(s) supprimée(s) "
+            "pour conversions de type"
+        )
         return cleaned_df
