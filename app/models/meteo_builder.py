@@ -31,7 +31,7 @@ class MeteoBuilder:
 
     def with_vent(self, dir_vec_max, dir_vec_moyen, dir_rafale_max, force_moy, force_rafale_max):
         """Définit les données de vent."""
-        # pylint: disable=too-many-arguments
+        # pylint: disable=too-many-arguments, too-many-positional-arguments, unknown-option-value
         self._vent = Vent(dir_vec_max, dir_vec_moyen, dir_rafale_max, force_moy, force_rafale_max)
         return self
 

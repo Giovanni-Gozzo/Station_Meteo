@@ -12,7 +12,7 @@ class Meteo:
     """
     Classe composite regroupant toutes les informations d'un relevé météo.
     """
-    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-arguments, too-many-positional-arguments, unknown-option-value
 
     def __init__(self, date: datetime,
                  station: Station,

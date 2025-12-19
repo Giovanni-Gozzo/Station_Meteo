@@ -2,8 +2,8 @@
 Module gérant le pipeline de nettoyage des données.
 Permet d'enchaîner plusieurs étapes de nettoyage.
 """
-import pandas as pd
 from typing import List
+import pandas as pd
 from app.services.cleaning.cleaning_base import DataCleaner
 
 class CleaningPipeline:
