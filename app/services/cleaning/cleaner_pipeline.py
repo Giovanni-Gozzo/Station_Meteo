@@ -3,13 +3,14 @@ Module gérant le pipeline de nettoyage des données.
 Permet d'enchaîner plusieurs étapes de nettoyage.
 """
 import pandas as pd
+from typing import List
 from app.services.cleaning.cleaning_base import DataCleaner
 
 class CleaningPipeline:
     """Permet de chaîner plusieurs cleaners."""
 
     def __init__(self):
-        self.cleaners: list[DataCleaner] = []
+        self.cleaners: List[DataCleaner] = []
 
     def add(self, cleaner: DataCleaner):
         """Ajoute un cleaner au pipeline."""

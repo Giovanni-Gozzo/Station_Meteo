@@ -2,6 +2,7 @@
 Module définissant le pipeline principal de traitement.
 """
 import os
+from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 
@@ -21,7 +22,7 @@ class MeteoPipeline:
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
 
-    def run(self, dataset_ids: list[str]) -> pd.DataFrame:
+    def run(self, dataset_ids: List[str]) -> pd.DataFrame:
         """Exécute la pipeline pour plusieurs stations."""
         # pylint: disable=too-many-locals
 

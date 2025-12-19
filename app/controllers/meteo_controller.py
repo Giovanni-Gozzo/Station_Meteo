@@ -3,6 +3,7 @@ Contrôleur pour la gestion des données météo.
 Orchestre la récupération depuis le pipeline et la transformation en objets modèles.
 """
 from datetime import datetime
+from typing import List
 import pandas as pd
 
 from app.services.pipeline import MeteoPipeline
@@ -19,7 +20,7 @@ class MeteoController:
     def __init__(self):
         self.pipeline = MeteoPipeline()
 
-    def get_latest_meteo_data(self, dataset_ids: list[str]):
+    def get_latest_meteo_data(self, dataset_ids: List[str]):
         """Exécute la pipeline et convertit le résultat en objets Meteo."""
         df = self.pipeline.run(dataset_ids)
         if df.empty:
