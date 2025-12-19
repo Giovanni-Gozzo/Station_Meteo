@@ -6,7 +6,7 @@ class Vent:
     """
     Représente les informations de vent (direction et force).
     """
-    # pylint: disable=too-many-arguments, too-many-positional-arguments, unknown-option-value
+    # pylint: disable=unknown-option-value, too-many-positional-arguments, too-many-arguments
 
     def __init__(
         self,
