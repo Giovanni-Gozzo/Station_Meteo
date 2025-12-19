@@ -64,7 +64,7 @@ class APIExtractor(Extractor):
             params["where"] = where_clause
 
         try:
-            response = requests.get(url, params=params)
+            response = requests.get(url, params=params, timeout=10)
             response.raise_for_status()
         except requests.RequestException as e:
             raise ConnectionError(f"Erreur lors de la récupération des données : {e}") from e
