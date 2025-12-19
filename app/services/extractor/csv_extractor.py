@@ -1,5 +1,8 @@
-import pandas as pd
+"""
+Module pour l'extraction de données au format CSV.
+"""
 from io import StringIO
+import pandas as pd
 from app.services.extractor.api_extractor import APIExtractor
 
 class CSVExtractor(APIExtractor):
@@ -11,4 +14,4 @@ class CSVExtractor(APIExtractor):
     def get_data(self) -> pd.DataFrame:
         if self.raw_data is None:
             raise ValueError("Aucune donnée brute. Appelez fetch() d'abord.")
-        return pd.read_csv(StringIO(self.raw_data),delimiter=";")
+        return pd.read_csv(StringIO(self.raw_data), delimiter=";")

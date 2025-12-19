@@ -1,11 +1,15 @@
+"""
+Module de nettoyage pour les valeurs nulles.
+"""
 import pandas as pd
+from app.services.cleaning.cleaning_base import DataCleaner
 
-
-class CleaningNulls:
+class CleaningNulls(DataCleaner):
     """
     Classe de nettoyage pour supprimer les lignes contenant des valeurs nulles
     dans certaines colonnes spécifiées.
     """
+    # pylint: disable=too-few-public-methods
 
     def __init__(self, columns: list[str]):
         """
@@ -34,7 +38,10 @@ class CleaningNulls:
 
         cleaned_df = df.dropna(subset=self.columns)
 
-        print(f"[CLEANING] {len(df) - len(cleaned_df)} ligne(s) supprimée(s) à cause de valeurs nulles "
-              f"dans les colonnes : {self.columns}")
+        removed_count = len(df) - len(cleaned_df)
+        print(
+            f"[CLEANING] {removed_count} ligne(s) supprimée(s) à cause de valeurs nulles "
+            f"dans les colonnes : {self.columns}"
+        )
 
         return cleaned_df

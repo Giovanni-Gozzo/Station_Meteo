@@ -1,3 +1,6 @@
+"""
+Module pour l'extraction de données au format JSON.
+"""
 import pandas as pd
 from app.services.extractor.api_extractor import APIExtractor
 

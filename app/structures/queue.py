@@ -1,6 +1,11 @@
+"""
+Implémentation d'une File (Queue).
+"""
 from app.structures.data_structure import DataStructure
 
 class Queue(DataStructure):
+    """Structure de données de type File (FIFO)."""
+
     def __init__(self):
         self.items = []
 
@@ -24,6 +29,7 @@ class Queue(DataStructure):
             self.items.remove(data)
 
     def is_empty(self):
+        """Vérifie si la file est vide."""
         return len(self.items) == 0
 
     def peek(self):
@@ -33,5 +39,5 @@ class Queue(DataStructure):
         return None
 
     def __iter__(self):
-        for item in self.items:
-            yield item
+        """Itérateur sur les éléments de la file."""
+        yield from self.items

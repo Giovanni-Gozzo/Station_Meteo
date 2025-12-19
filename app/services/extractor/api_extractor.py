@@ -1,6 +1,8 @@
-import requests
+"""
+Module de base pour l'extraction via API.
+"""
 from datetime import datetime
-from urllib.parse import urlencode, unquote
+import requests
 from app.services.extractor.extractor_base import Extractor
 
 
@@ -19,6 +21,7 @@ class APIExtractor(Extractor):
             raise ValueError("Le format doit être 'json', 'csv' ou 'parquet'.")
 
     def get_endpoint(self) -> str:
+        """Retourne l'URL complète de l'endpoint."""
         return f"{self.base_url}/{self.dataset_id}/exports/{self.export_format}"
 
     def add_filter(self, column: str, operator: str, value):
@@ -64,7 +67,7 @@ class APIExtractor(Extractor):
             response = requests.get(url, params=params)
             response.raise_for_status()
         except requests.RequestException as e:
-            raise ConnectionError(f"Erreur lors de la récupération des données : {e}")
+            raise ConnectionError(f"Erreur lors de la récupération des données : {e}") from e
 
         if self.export_format == "json":
             self.raw_data = response.json()

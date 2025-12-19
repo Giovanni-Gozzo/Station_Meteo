@@ -1,12 +1,17 @@
+"""
+Commande d'extraction CSV.
+"""
+from datetime import datetime, timedelta
 from app.services.extractor.command import Command
 from app.services.extractor.csv_extractor import CSVExtractor
-from datetime import datetime, timedelta
 
 class CSVExtractionCommand(Command):
     """
     Commande concrète pour exécuter l'extraction des données au format CSV.
     Implémente le pattern Command.
     """
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, dataset_id: str):
         self.dataset_id = dataset_id
         self.extractor = CSVExtractor(dataset_id)
@@ -18,6 +23,6 @@ class CSVExtractionCommand(Command):
 
         self.extractor.add_filter("heure_de_paris", ">", one_hour_ago_iso)
         self.extractor.add_filter("heure_de_paris", "<", now_iso)
-        
+
         self.extractor.fetch()
         return self.extractor.get_data()

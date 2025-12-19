@@ -1,8 +1,12 @@
+"""
+Module de nettoyage pour les valeurs aberrantes (outliers).
+"""
 import pandas as pd
 from app.services.cleaning.cleaning_base import DataCleaner
 
 class OutlierCleaner(DataCleaner):
     """Supprime les valeurs aberrantes selon des bornes physiques logiques."""
+    # pylint: disable=too-few-public-methods
 
     def __init__(self):
         """
@@ -12,7 +16,7 @@ class OutlierCleaner(DataCleaner):
         self.rules = {
             # --- Atmosphère ---
             "temperature": (-30, 60),    # °C
-            "temperature_en_degre_c":(-30,60),
+            "temperature_en_degre_c": (-30, 60),
             "humidite": (0, 100),        # %
             "pression": (85000, 110000),     # Pa
 
@@ -38,14 +42,19 @@ class OutlierCleaner(DataCleaner):
         for col, (min_val, max_val) in self.rules.items():
             if col in cleaned_df.columns:
                 before = len(cleaned_df)
-                cleaned_df[col]=cleaned_df[col].astype(float)
+                cleaned_df[col] = cleaned_df[col].astype(float)
                 cleaned_df = cleaned_df[
                     (cleaned_df[col] >= min_val) & (cleaned_df[col] <= max_val)
                 ]
                 removed = before - len(cleaned_df)
                 if removed > 0:
-                    print(f"[CLEANING] {removed} ligne(s) supprimée(s) (valeurs aberrantes dans '{col}' hors [{min_val}, {max_val}])")
+                    print(
+                        f"[CLEANING] {removed} ligne(s) supprimée(s) "
+                        f"(valeurs aberrantes dans '{col}' hors [{min_val}, {max_val}])"
+                    )
 
         removed_total = initial_len - len(cleaned_df)
-        print(f"[CLEANING] ✅ Total : {removed_total} ligne(s) supprimée(s) pour valeurs aberrantes")
+        print(
+            f"[CLEANING] ✅ Total : {removed_total} ligne(s) supprimée(s) pour valeurs aberrantes"
+        )
         return cleaned_df

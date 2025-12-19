@@ -1,5 +1,8 @@
-import pandas as pd
+"""
+Module pour l'extraction de données au format Parquet.
+"""
 import io
+import pandas as pd
 from app.services.extractor.api_extractor import APIExtractor
 
 class ParquetExtractor(APIExtractor):
