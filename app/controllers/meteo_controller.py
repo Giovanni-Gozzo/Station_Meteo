@@ -11,7 +11,10 @@ from app.models.station_display import StationDisplay
 from app.structures.linked_list import LinkedList
 
 class MeteoController:
-    """Orchestre la récupération et la transformation des données météo."""
+    """
+    Orchestre la récupération et la transformation des données météo.
+    """
+    # pylint: disable=too-few-public-methods
 
     def __init__(self):
         self.pipeline = MeteoPipeline()
