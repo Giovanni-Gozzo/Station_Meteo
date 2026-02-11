@@ -24,4 +24,5 @@ jobs:
         pylint $(find . -name "*.py" -not -path "./tests/*")
     - name: Test with pytest
       run: |
+        export PYTHONPATH=$PYTHONPATH:.
         pytest --cov=app tests/
