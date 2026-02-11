@@ -1,3 +1,6 @@
 flask
 pandas
 requests
+pytest
+pytest-cov
+requests-mock

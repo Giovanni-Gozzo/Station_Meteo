@@ -16,10 +16,18 @@ pip install -r requirements.txt
 Depuis la racine du projet, lancez la commande :
 
 ```bash
-python -m app.main
+python -m app.main or python3 -m app.main
 ```
 
 ## 🌐 Accès
 
 Ouvrez votre navigateur à l'adresse suivante :
 [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+## 🧪 Tests
+
+Depuis la racine du projet, lancez la commande :
+
+```bash
+python3 -m pytest
+```

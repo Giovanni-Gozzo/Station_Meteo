@@ -39,7 +39,11 @@ class TypeCleaner(DataCleaner):
             if target_type == "datetime":
                 cleaned_df[col] = pd.to_datetime(cleaned_df[col], errors='coerce')
             elif target_type in [int, float]:
-                cleaned_df[col] = cleaned_df[col].astype(target_type)
+                cleaned_df[col] = pd.to_numeric(cleaned_df[col], errors='coerce')
+                if target_type == int:
+                     # Remove NaNs before converting to int, as int doesn't support NaN
+                     # We will drop NaNs in the next step anyway
+                     pass
             else:
                 cleaned_df[col] = cleaned_df[col].astype(str)
 

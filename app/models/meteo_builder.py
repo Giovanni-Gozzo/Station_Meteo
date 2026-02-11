@@ -60,11 +60,11 @@ class MeteoBuilder:
             if not self._station:
                 self._station = Station("Inconnu", "Inconnu", "0")
             if not self._vent:
-                self._vent = Vent(0, 0, 0, 0, 0)
+                self._vent = Vent(0.0, 0.0, 0.0, 0.0, 0.0)
             if not self._pluie:
-                self._pluie = Pluie(0, 0)
+                self._pluie = Pluie(0.0, 0.0)
             if not self._atmosphere:
-                self._atmosphere = Atmosphere(0, 0, 0)
+                self._atmosphere = Atmosphere(0.0, 0.0, 0.0)
             if not self._date:
                 self._date = datetime.now()
 

@@ -6,7 +6,6 @@ import sys
 from datetime import datetime, timedelta
 import pandas as pd
 
-# Ajout du dossier parent au path pour les imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
 
 # pylint: disable=wrong-import-position

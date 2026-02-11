@@ -18,7 +18,7 @@ class OutlierCleaner(DataCleaner):
             "temperature": (-30, 60),    # °C
             "temperature_en_degre_c": (-30, 60),
             "humidite": (0, 100),        # %
-            "pression": (85000, 110000),     # Pa
+            "pression": (850, 1100),     # hPa
 
             # --- Vent ---
             "direction_du_vecteur_de_vent_max": (0, 360),            # degrés
