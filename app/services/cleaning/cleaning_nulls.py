@@ -1,6 +1,7 @@
 """
 Module de nettoyage pour les valeurs nulles.
 """
+from typing import List
 import pandas as pd
 from app.services.cleaning.cleaning_base import DataCleaner
 
@@ -11,7 +12,7 @@ class CleaningNulls(DataCleaner):
     """
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, columns: list[str]):
+    def __init__(self, columns: List[str]):
         """
         Initialise le nettoyeur.
 

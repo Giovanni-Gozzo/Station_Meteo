@@ -1,6 +1,7 @@
 """
 Module de nettoyage pour la conversion de types.
 """
+from typing import Dict
 import pandas as pd
 from app.services.cleaning.cleaning_base import DataCleaner
 
@@ -18,7 +19,7 @@ class TypeCleaner(DataCleaner):
         "temperature_en_degre_c": float
     }
 
-    def __init__(self, columns_types: dict = None):
+    def __init__(self, columns_types: Dict = None):
         """
         :param columns_types: dictionnaire nom_colonne -> type_cible.
                               Si None, utilise DEFAULT_COLUMNS_TYPES.
