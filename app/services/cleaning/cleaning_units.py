@@ -4,16 +4,18 @@ Module de nettoyage pour la normalisation des unités.
 import pandas as pd
 from app.services.cleaning.cleaning_base import DataCleaner
 
+
 class UnitCleaner(DataCleaner):
     """
     Normalise les unités des colonnes pour correspondre aux attentes des autres cleaners.
     Exemple: Conversion de la pression de Pascal (Pa) vers Hectopascal (hPa).
     """
+    # pylint: disable=too-few-public-methods
 
     def clean(self, df: pd.DataFrame) -> pd.DataFrame:
         """Convertit les unités."""
         cleaned_df = df.copy()
-        
+
         # Conversion Pression : Pa -> hPa
         if "pression" in cleaned_df.columns:
             # On suppose que si la pression est > 10000, c'est en Pa (1 hPa = 100 Pa)

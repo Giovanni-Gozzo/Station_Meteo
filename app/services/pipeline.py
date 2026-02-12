@@ -8,7 +8,7 @@ import pandas as pd
 
 from app.services.cleaning.cleaning_type import TypeCleaner
 from app.services.cleaning.cleaning_nulls import CleaningNulls
-from app.services.cleaning.cleaning_nulls import CleaningNulls
+
 from app.services.cleaning.cleaning_outliers import OutlierCleaner
 from app.services.cleaning.cleaning_units import UnitCleaner
 from app.services.cleaning.cleaner_pipeline import CleaningPipeline
