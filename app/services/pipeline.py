@@ -8,7 +8,9 @@ import pandas as pd
 
 from app.services.cleaning.cleaning_type import TypeCleaner
 from app.services.cleaning.cleaning_nulls import CleaningNulls
+from app.services.cleaning.cleaning_nulls import CleaningNulls
 from app.services.cleaning.cleaning_outliers import OutlierCleaner
+from app.services.cleaning.cleaning_units import UnitCleaner
 from app.services.cleaning.cleaner_pipeline import CleaningPipeline
 from app.services.extractor.csv_extraction_command import CSVExtractionCommand
 from app.structures.queue import Queue
@@ -55,6 +57,7 @@ class MeteoPipeline:
                 CleaningNulls(columns=["temperature_en_degre_c", "humidite", "pression"])
             )
             cleaning_pipeline.add(TypeCleaner())
+            cleaning_pipeline.add(UnitCleaner())
             cleaning_pipeline.add(OutlierCleaner())
             df = cleaning_pipeline.run(df)
 

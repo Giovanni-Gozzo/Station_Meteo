@@ -150,7 +150,23 @@ class TestCleaning:
         pipeline = CleaningPipeline()
         pipeline.add(CleaningNulls(["temperature_en_degre_c"]))
         res = pipeline.run(dirty_df)
-        assert len(res) == 3         
+        assert len(res) == 3   
+
+    def test_unit_cleaner(self):
+        from app.services.cleaning.cleaning_units import UnitCleaner
+        df = pd.DataFrame({
+            "pression": [101300.0, 900.0, 200000.0],
+            "other": [1, 2, 3]
+        })
+        cleaner = UnitCleaner()
+        cleaned = cleaner.clean(df)
+        
+        # 101300 -> 1013
+        # 900 -> 900 (uncanged)
+        # 200000 -> 2000
+        assert cleaned.iloc[0]["pression"] == 1013.0
+        assert cleaned.iloc[1]["pression"] == 900.0
+        assert cleaned.iloc[2]["pression"] == 2000.0         
 
 class TestPipeline:
     def test_pipeline_run(self, tmp_path, requests_mock):

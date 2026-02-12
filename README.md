@@ -1,6 +1,6 @@
 # Station Météo
 
-Application simple pour visualiser les données météo.
+Application simple pour visualiser les données météo de Toulouse Métropole.
 
 ## 🚀 Installation
 
@@ -11,23 +11,37 @@ Application simple pour visualiser les données météo.
 pip install -r requirements.txt
 ```
 
-## ▶️ Lancement
+## ▶️ Lancement Local
 
 Depuis la racine du projet, lancez la commande :
 
 ```bash
-python -m app.main or python3 -m app.main
+python3 -m app.main
 ```
 
-## 🌐 Accès
+L'application sera accessible sur :
+[http://127.0.0.1:5002](http://127.0.0.1:5002)
 
-Ouvrez votre navigateur à l'adresse suivante :
-[http://127.0.0.1:5000](http://127.0.0.1:5000)
+> **Note :** Le port par défaut est **5002** pour éviter les conflits avec le service AirPlay sur macOS (qui utilise souvent le port 5000).
 
 ## 🧪 Tests
 
-Depuis la racine du projet, lancez la commande :
+Pour exécuter la suite de tests unitaires :
 
 ```bash
 python3 -m pytest
 ```
+
+## 🐳 Lancement avec Docker
+
+Si vous préférez utiliser Docker :
+
+1. Construisez et lancez le conteneur :
+   ```bash
+   docker compose up --build
+   ```
+
+2. Accédez à l'application via :
+   [http://127.0.0.1:5001](http://127.0.0.1:5001)
+
+> **Note :** Docker mappe le port interne 5002 vers le port **5001** de votre machine hôte.

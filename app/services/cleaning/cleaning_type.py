@@ -16,7 +16,8 @@ class TypeCleaner(DataCleaner):
         "direction_du_vecteur_vent_moyen": float,
         "direction_du_vecteur_de_vent_max_en_degres": float,
         "humidite": float,
-        "temperature_en_degre_c": float
+        "temperature_en_degre_c": float,
+        "pression": float
     }
 
     def __init__(self, columns_types: Dict = None):
